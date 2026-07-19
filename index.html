@@ -1,89 +1,321 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>Yoane & Marie-Aude — Tropical Sunset</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Outfit:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@1,400&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+  <meta name="theme-color" content="#D9572E">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Yoane & Marie-Aude">
+  <title>Yoane & Marie-Aude — Mariage 08.08.2026</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Outfit:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@1,400&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <div id="app">
-    <header class="topbar">
-      <div class="brand">
-        <img src="2958871d-0a36-4fbe-921e-ffd9b93db0f9.jpeg" alt="couple" class="logo">
-        <div>
-          <div class="display">Yoane & Marie-Aude</div>
-          <div class="meta">08 août 2026 · Menara Garden · Tropical Sunset</div>
+  <div id="app" class="app-container">
+    
+    <!-- Splash Screen (écran d'accueil type app) -->
+    <section id="splash-screen" class="screen active splash">
+      <div class="splash-content">
+        <div class="splash-visual">
+          <img src="2958871d-0a36-4fbe-921e-ffd9b93db0f9.jpeg" alt="Yoane & Marie-Aude" class="splash-photo" loading="lazy">
+          <div class="splash-overlay"></div>
+        </div>
+        
+        <div class="splash-info">
+          <h1 class="splash-title">Yoane & Marie-Aude</h1>
+          <p class="splash-date">08 août 2026</p>
+          <p class="splash-location">Menara Garden · Yopougon</p>
+          <p class="splash-theme">Tropical Sunset</p>
+        </div>
+        
+        <button class="btn-enter" data-screen="home">
+          Entrer dans notre univers
+        </button>
+        
+        <p class="splash-verse">
+          « Par-dessus tout, revêtez-vous de l'amour. »<br>
+          <span class="verse-ref">Colossiens 3:14</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- Écran d'accueil avec cartes -->
+    <section id="home" class="screen home">
+      <header class="app-header">
+        <div class="header-branding">
+          <h2>Bienvenue</h2>
+          <p class="header-meta">08 août 2026 · Menara Garden</p>
+        </div>
+      </header>
+
+      <main class="home-grid">
+        <article class="card card-primary" data-screen="seat">
+          <div class="card-icon">🪑</div>
+          <h3>Trouver ma place</h3>
+          <p>Découvrez votre table et vos voisins</p>
+        </article>
+
+        <article class="card" data-screen="menu">
+          <div class="card-icon">🍽️</div>
+          <h3>Les saveurs</h3>
+          <p>Menu et spécialités de la réception</p>
+        </article>
+
+        <article class="card" data-screen="gifts">
+          <div class="card-icon">🎁</div>
+          <h3>Cadeaux</h3>
+          <p>Informations délicates & discrètes</p>
+        </article>
+
+        <article class="card" data-screen="photos">
+          <div class="card-icon">📸</div>
+          <h3>Partager mes photos</h3>
+          <p>Contribuez à notre album collectif</p>
+        </article>
+
+        <article class="card" data-screen="gallery">
+          <div class="card-icon">🖼️</div>
+          <h3>Album officiel</h3>
+          <p>Photos du photographe professionnel</p>
+        </article>
+
+        <article class="card" data-screen="guestbook">
+          <div class="card-icon">💌</div>
+          <h3>Livre d'or</h3>
+          <p>Laissez-nous un beau message</p>
+        </article>
+      </main>
+    </section>
+
+    <!-- Écran : Trouver ma place -->
+    <section id="seat" class="screen seat-screen">
+      <header class="screen-header">
+        <button class="btn-back" data-screen="home">← Retour</button>
+        <h2>Trouver ma place</h2>
+      </header>
+
+      <div class="screen-content">
+        <p class="screen-intro">Entrez votre prénom et nom pour découvrir votre emplacement</p>
+        
+        <div class="search-container">
+          <input 
+            id="seat-input" 
+            type="text" 
+            placeholder="Prénom et nom..." 
+            class="input-search"
+            autocomplete="off"
+          >
+          <button id="seat-validate" class="btn-search">Rechercher</button>
+        </div>
+
+        <div id="seat-result" class="seat-result hidden">
+          <div class="result-welcome" id="result-welcome"></div>
+          <div class="result-table" id="result-table"></div>
+          <div class="result-companions" id="result-companions"></div>
+        </div>
+
+        <div id="seat-noresult" class="empty-state hidden">
+          <p>Nous ne trouvons pas ce nom.</p>
+          <p class="small">Vérifiez l'orthographe ou contactez les mariés.</p>
+        </div>
+
+        <div id="sync-status" class="sync-indicator">
+          🔄 Synchronisation des invités...
         </div>
       </div>
-      <nav class="tabs" role="tablist" aria-label="Navigation">
-        <button data-screen="home" class="tab-btn active">Accueil</button>
-        <button data-screen="seat" class="tab-btn">Ma place</button>
-        <button data-screen="photos" class="tab-btn">Photos</button>
-        <button data-screen="guestbook" class="tab-btn">Livre d'or</button>
-      </nav>
-    </header>
+    </section>
 
-    <main>
-      <section id="home" class="screen active">
-        <div class="hero">
-          <div class="hero-left">
-            <h1 class="display big">Yoane & Marie-Aude</h1>
-            <p class="lead">Thème — Tropical Sunset · Menara Garden</p>
-            <button class="enter-btn" data-screen="seat">Trouver ma place</button>
-          </div>
-          <div class="hero-gallery" id="hero-gallery">
-            <!-- photographer photos injected -->
-          </div>
+    <!-- Écran : Les saveurs -->
+    <section id="menu" class="screen menu-screen">
+      <header class="screen-header">
+        <button class="btn-back" data-screen="home">← Retour</button>
+        <h2>Les saveurs de notre réception</h2>
+      </header>
+
+      <div class="screen-content">
+        <p class="screen-intro">
+          Nous avons imaginé une réception aux couleurs de nos traditions, avec une sélection de mets ivoiriens et de saveurs appréciées de tous.
+        </p>
+
+        <div class="menu-section">
+          <h3 class="menu-title">🥗 Entrée</h3>
+          <ul class="menu-items">
+            <li>Salade composée fraîche</li>
+          </ul>
         </div>
 
-        <section class="verse">« Par-dessus tout, revêtez-vous de l'amour. » — Colossiens 3:14</section>
-      </section>
-
-      <section id="seat" class="screen">
-        <h2>Trouver ma place</h2>
-        <p class="muted">Tapez votre prénom et nom puis validez — nous n'affichons pas la liste complète par défaut.</p>
-        <div class="search-row">
-          <input id="seat-input" placeholder="Votre prénom et nom..." autocomplete="off">
-          <button id="seat-validate">Valider</button>
-        </div>
-        <div id="seat-result" class="seat-result"></div>
-        <div id="seat-noresult" class="empty">Nous ne trouvons pas ce nom. Vérifiez l'orthographe ou contactez les mariés.</div>
-        <div id="sync-status" class="sync">🔄 Synchronisation Google Sheets...</div>
-      </section>
-
-      <section id="photos" class="screen">
-        <h2>Photos — Album & Partage</h2>
-        <p class="muted">Photos officielles (photographe) et photos partagées par les invités. Cliquer pour télécharger.</p>
-        <div class="photographer-row" id="photographer-row"></div>
-
-        <div class="uploader">
-          <input id="upload-name" placeholder="Votre prénom (pour la légende)">
-          <label class="upload-cta">📷 Ajouter des photos <input id="upload-input" type="file" accept="image/*" multiple></label>
-          <div id="upload-progress" class="muted"></div>
+        <div class="menu-section">
+          <h3 class="menu-title">🍽️ Plats traditionnels à découvrir</h3>
+          <ul class="menu-items">
+            <li>Tchep au poisson et au bœuf</li>
+            <li>Placali accompagné de sauce kopè</li>
+            <li>Foutou banane accompagné de sauce graine</li>
+            <li>Kplé accompagné de foutou manioc</li>
+            <li>Foutou igname accompagné de sauce gouagouassou</li>
+            <li>Méchoui de mouton accompagné d'attiéké</li>
+            <li>Poisson frit et poulet frit accompagnés d'alloco et de frites</li>
+            <li>Igname bouillie accompagnée de sauce tomate</li>
+          </ul>
         </div>
 
-        <div class="grid" id="shared-grid"></div>
-      </section>
+        <div class="menu-section">
+          <h3 class="menu-title">🍰 Douceur</h3>
+          <ul class="menu-items">
+            <li>Wedding cake</li>
+          </ul>
+        </div>
 
-      <section id="guestbook" class="screen">
+        <div class="menu-section">
+          <h3 class="menu-title">🥤 Boissons</h3>
+          <ul class="menu-items">
+            <li>Eau minérale</li>
+            <li>Jus naturels</li>
+            <li>Boissons gazeuses</li>
+            <li>Bandji</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Écran : Cadeaux -->
+    <section id="gifts" class="screen gifts-screen">
+      <header class="screen-header">
+        <button class="btn-back" data-screen="home">← Retour</button>
+        <h2>Cadeaux</h2>
+      </header>
+
+      <div class="screen-content gifts-content">
+        <div class="gifts-box">
+          <p class="gifts-text">
+            <strong>Votre présence est le plus beau témoignage d'affection que nous puissions recevoir.</strong>
+          </p>
+
+          <p class="gifts-text">
+            Pour celles et ceux qui souhaiteraient néanmoins nous offrir un présent, nous privilégions les cadeaux en espèces, afin de pouvoir les emporter plus facilement avec nous à notre retour à Dakar.
+          </p>
+
+          <p class="gifts-text">
+            Un dispositif discret sera prévu lors de la réception.
+          </p>
+
+          <p class="gifts-text gifts-thanks">
+            <strong>Merci du fond du cœur pour votre délicatesse.</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Écran : Partager mes photos -->
+    <section id="photos" class="screen photos-screen">
+      <header class="screen-header">
+        <button class="btn-back" data-screen="home">← Retour</button>
+        <h2>Partager mes photos</h2>
+      </header>
+
+      <div class="screen-content">
+        <p class="screen-intro">Contribuez à notre album collectif en partageant vos plus belles photos</p>
+
+        <div class="uploader-section">
+          <input 
+            id="upload-name" 
+            type="text" 
+            placeholder="Votre prénom (optionnel)" 
+            class="input-name"
+            maxlength="30"
+          >
+          
+          <label class="upload-button">
+            <input 
+              id="upload-input" 
+              type="file" 
+              accept="image/*" 
+              multiple
+              style="display: none;"
+            >
+            <span class="upload-label">📷 Sélectionner des photos</span>
+          </label>
+
+          <div id="upload-progress" class="progress-indicator"></div>
+        </div>
+
+        <div id="shared-grid" class="photo-grid">
+          <!-- Photos partagées injected ici -->
+        </div>
+
+        <div id="shared-empty" class="empty-state">
+          <p>Aucune photo partagée pour le moment.</p>
+          <p class="small">Soyez les premiers ! 📸</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Écran : Album officiel -->
+    <section id="gallery" class="screen gallery-screen">
+      <header class="screen-header">
+        <button class="btn-back" data-screen="home">← Retour</button>
+        <h2>Album officiel</h2>
+      </header>
+
+      <div class="screen-content">
+        <p class="screen-intro">Les plus beaux moments capturés par notre photographe</p>
+
+        <div id="official-gallery" class="photo-grid">
+          <!-- Photos officielles injected ici -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Écran : Livre d'or -->
+    <section id="guestbook" class="screen guestbook-screen">
+      <header class="screen-header">
+        <button class="btn-back" data-screen="home">← Retour</button>
         <h2>Livre d'or</h2>
-        <form id="gb-form">
-          <input id="gb-name" placeholder="Votre nom">
-          <textarea id="gb-message" placeholder="Laissez un mot doux..."></textarea>
-          <div class="gb-actions"><button type="submit" class="btn primary">Envoyer</button></div>
+      </header>
+
+      <div class="screen-content">
+        <p class="screen-intro">Laissez-nous un beau souvenir de cette journée</p>
+
+        <form id="gb-form" class="guestbook-form">
+          <input 
+            id="gb-name" 
+            type="text" 
+            placeholder="Votre nom" 
+            class="input-guestbook"
+            required
+          >
+          <textarea 
+            id="gb-message" 
+            placeholder="Votre message..." 
+            class="textarea-guestbook"
+            rows="4"
+            required
+          ></textarea>
+          <button type="submit" class="btn-submit">Envoyer</button>
         </form>
-        <div id="guestbook-list"></div>
-      </section>
 
-    </main>
+        <div id="guestbook-list" class="guestbook-list">
+          <!-- Messages injected ici -->
+        </div>
 
-    <footer class="bottomnav">
-      <small>Yoane & Marie-Aude · 2026 · Tropical Sunset</small>
+        <div id="guestbook-empty" class="empty-state">
+          <p>Le livre d'or est vide pour l'instant.</p>
+          <p class="small">Soyez le premier à laisser un message ! 💌</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>Yoane & Marie-Aude · 08 août 2026 · Tropical Sunset</p>
     </footer>
   </div>
 
-  <script src="js/app.js"></script>
+  <!-- Scripts -->
+  <script src="js/app.js" defer></script>
 </body>
 </html>
