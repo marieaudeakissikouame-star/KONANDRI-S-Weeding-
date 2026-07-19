@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Yoane & Marie-Aude — Tropical Sunset</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Outfit:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div class="brand">
+        <img src="2958871d-0a36-4fbe-921e-ffd9b93db0f9.jpeg" alt="couple" class="logo">
+        <div>
+          <div class="display">Yoane & Marie-Aude</div>
+          <div class="meta">08 août 2026 · Menara Garden · Tropical Sunset</div>
+        </div>
+      </div>
+      <nav class="tabs" role="tablist" aria-label="Navigation">
+        <button data-screen="home" class="tab-btn active">Accueil</button>
+        <button data-screen="seat" class="tab-btn">Ma place</button>
+        <button data-screen="photos" class="tab-btn">Photos</button>
+        <button data-screen="guestbook" class="tab-btn">Livre d'or</button>
+      </nav>
+    </header>
+
+    <main>
+      <section id="home" class="screen active">
+        <div class="hero">
+          <div class="hero-left">
+            <h1 class="display big">Yoane & Marie-Aude</h1>
+            <p class="lead">Thème — Tropical Sunset · Menara Garden</p>
+            <button class="enter-btn" data-screen="seat">Trouver ma place</button>
+          </div>
+          <div class="hero-gallery" id="hero-gallery">
+            <!-- photographer photos injected -->
+          </div>
+        </div>
+
+        <section class="verse">« Par-dessus tout, revêtez-vous de l'amour. » — Colossiens 3:14</section>
+      </section>
+
+      <section id="seat" class="screen">
+        <h2>Trouver ma place</h2>
+        <p class="muted">Tapez votre prénom et nom puis validez — nous n'affichons pas la liste complète par défaut.</p>
+        <div class="search-row">
+          <input id="seat-input" placeholder="Votre prénom et nom..." autocomplete="off">
+          <button id="seat-validate">Valider</button>
+        </div>
+        <div id="seat-result" class="seat-result"></div>
+        <div id="seat-noresult" class="empty">Nous ne trouvons pas ce nom. Vérifiez l'orthographe ou contactez les mariés.</div>
+        <div id="sync-status" class="sync">🔄 Synchronisation Google Sheets...</div>
+      </section>
+
+      <section id="photos" class="screen">
+        <h2>Photos — Album & Partage</h2>
+        <p class="muted">Photos officielles (photographe) et photos partagées par les invités. Cliquer pour télécharger.</p>
+        <div class="photographer-row" id="photographer-row"></div>
+
+        <div class="uploader">
+          <input id="upload-name" placeholder="Votre prénom (pour la légende)">
+          <label class="upload-cta">📷 Ajouter des photos <input id="upload-input" type="file" accept="image/*" multiple></label>
+          <div id="upload-progress" class="muted"></div>
+        </div>
+
+        <div class="grid" id="shared-grid"></div>
+      </section>
+
+      <section id="guestbook" class="screen">
+        <h2>Livre d'or</h2>
+        <form id="gb-form">
+          <input id="gb-name" placeholder="Votre nom">
+          <textarea id="gb-message" placeholder="Laissez un mot doux..."></textarea>
+          <div class="gb-actions"><button type="submit" class="btn primary">Envoyer</button></div>
+        </form>
+        <div id="guestbook-list"></div>
+      </section>
+
+    </main>
+
+    <footer class="bottomnav">
+      <small>Yoane & Marie-Aude · 2026 · Tropical Sunset</small>
+    </footer>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
