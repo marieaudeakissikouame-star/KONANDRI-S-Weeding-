@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Yoane & Marie-Aude — Notre mariage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Outfit:wght@300;400;500;600;700&family=Cormorant+Garamond:ital@1&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --ivory:#FBF3E8;
+    --paper:#FFFCF7;
+    --peach:#F4B98A;
+    --coral:#E8734A;
+    --sunset:#D9572E;
+    --rose:#EAC0BC;
+    --gold:#C9A24B;
+    --gold-soft:#E4CE9C;
+    --green-deep:#2E4436;
+    --green-leaf:#5C7A5F;
+    --text:#3A2A22;
+    --text-soft:#8A7666;
+    --shadow: 0 18px 40px -18px rgba(58,42,34,0.35);
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;background:var(--green-deep);}
+  body{
+    font-family:'Outfit',sans-serif;
+    color:var(--text);
+    display:flex;
+    justify-content:center;
+    min-height:100vh;
+  }
+  .display{font-family:'Fraunces',serif;}
+  .script{font-family:'Cormorant Garamond',serif; font-style:italic;}
+
+  #shell{
+    width:100%;
+    max-width:460px;
+    min-height:100vh;
+    background:var(--ivory);
+    position:relative;
+    overflow-x:hidden;
+    box-shadow:0 0 60px rgba(0,0,0,0.4);
+  }
+
+  /* ---------- SPLASH ---------- */
+  #splash{
+    position:fixed; inset:0; z-index:200;
+    max-width:460px; margin:0 auto;
+    background:linear-gradient(180deg,#2E4436 0%,#4A5F3F 55%,#B9663A 100%);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    transition:opacity .8s ease, visibility .8s ease;
+  }
+  #splash svg{width:70%; max-width:220px;}
+  #splash h1{
+    color:var(--paper); font-size:1.6rem; margin:18px 0 4px; letter-spacing:.5px; text-align:center;
+  }
+  #splash p{color:#EAD9C0; font-size:.85rem; letter-spacing:3px; text-transform:uppercase; margin:0;}
+  #splash.hidden{opacity:0; visibility:hidden; pointer-events:none;}
+  .sun{transform-origin:110px 150px; animation:rise 2.2s ease-out forwards;}
+  @keyframes rise{from{transform:translateY(40px); opacity:0;} to{transform:translateY(0); opacity:1;}}
+
+  /* ---------- TOP BAR ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:40;
+    display:flex; align-items:center; gap:10px;
+    padding:14px 18px; background:rgba(251,243,232,.9); backdrop-filter:blur(8px);
+    border-bottom:1px solid rgba(58,42,34,.08);
+  }
+  .topbar button.back{
+    background:none;border:none;font-size:1.3rem;color:var(--coral);cursor:pointer;line-height:1;padding:4px;
+  }
+  .topbar .title{font-family:'Fraunces',serif; font-weight:500; font-size:1.05rem; letter-spacing:.3px;}
+
+  .screen{display:none; padding-bottom:90px; animation:fadeIn .35s ease;}
+  .screen.active{display:block;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+
+  /* ---------- HOME ---------- */
+  #home-hero{
+    position:relative; height:66vh; min-height:420px; max-height:560px;
+    background:
+      linear-gradient(180deg, rgba(46,68,54,.15) 0%, rgba(46,68,54,.55) 70%, var(--ivory) 100%),
+      radial-gradient(120% 90% at 50% 100%, #F2A15C 0%, #E8734A 35%, #B9532E 60%, #4A5F3F 90%);
+    display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
+    padding:0 24px 34px;
+    overflow:hidden;
+  }
+  #home-hero .sun-glow{
+    position:absolute; left:50%; top:22%; width:180px; height:180px; border-radius:50%;
+    background:radial-gradient(circle, #FFE3B0 0%, #F6B36B 45%, rgba(246,179,107,0) 75%);
+    transform:translate(-50%,-50%); filter:blur(2px);
+  }
+  #home-hero .fronds{position:absolute; bottom:-6px; width:100%; left:0; opacity:.9;}
+  .eyebrow{
+    font-size:.68rem; letter-spacing:4px; text-transform:uppercase; color:#FFE9CF;
+    margin-bottom:10px; z-index:2; text-align:center;
+  }
+  .couple-names{
+    font-family:'Fraunces',serif; font-weight:500; font-style:italic; color:#fff;
+    font-size:2.5rem; line-height:1.05; text-align:center; z-index:2;
+    text-shadow:0 4px 24px rgba(0,0,0,.25);
+  }
+  .couple-meta{color:#FFEFDD; font-size:.88rem; text-align:center; margin-top:10px; z-index:2; line-height:1.6;}
+  .couple-meta b{color:#fff; font-weight:500;}
+  .enter-btn{
+    margin-top:20px; z-index:2;
+    background:var(--paper); color:var(--sunset); border:none; padding:13px 30px; border-radius:30px;
+    font-family:'Outfit',sans-serif; font-weight:600; font-size:.85rem; letter-spacing:.5px;
+    box-shadow:var(--shadow); cursor:pointer;
+  }
+  .photo-strip{display:flex; gap:8px; z-index:2; margin-top:18px;}
+  .photo-strip .ph{
+    width:52px; height:52px; border-radius:50%; border:2px solid #fff;
+    background:linear-gradient(135deg,#EAC0BC,#E8734A); display:flex; align-items:center; justify-content:center;
+    color:#fff; font-size:.6rem; text-align:center; overflow:hidden;
+  }
+
+  .verse-block{
+    margin:30px 24px; padding:22px 20px; text-align:center; position:relative;
+    border-top:1px solid var(--gold-soft); border-bottom:1px solid var(--gold-soft);
+  }
+  .verse-block p{font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.25rem; color:var(--green-deep); line-height:1.5; margin:0 0 8px;}
+  .verse-block span{font-size:.72rem; letter-spacing:2px; text-transform:uppercase; color:var(--coral);}
+
+  .section-label{
+    font-size:.7rem; letter-spacing:3px; text-transform:uppercase; color:var(--text-soft);
+    margin:8px 24px 12px;
+  }
+  .card-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:0 20px;}
+  .nav-card{
+    background:var(--paper); border-radius:18px; padding:18px 14px; text-align:left;
+    box-shadow:0 10px 24px -14px rgba(58,42,34,.3); border:1px solid rgba(58,42,34,.06);
+    cursor:pointer; transition:transform .15s ease; position:relative; overflow:hidden;
+  }
+  .nav-card:active{transform:scale(.97);}
+  .nav-card .ic{font-size:1.5rem; display:block; margin-bottom:10px;}
+  .nav-card .lbl{font-family:'Fraunces',serif; font-weight:500; font-size:.95rem; display:block; line-height:1.2;}
+  .nav-card .sub{font-size:.72rem; color:var(--text-soft); margin-top:4px; display:block;}
+
+  .divider-scallop{
+    height:16px; margin:26px 0 6px;
+    background-image: radial-gradient(circle at 8px 0px, transparent 8px, var(--ivory) 9px);
+    background-size:16px 16px; background-position:0 -8px;
+  }
+
+  /* ---------- GENERIC SECTION ---------- */
+  .panel{margin:0 20px 18px; background:var(--paper); border-radius:18px; padding:20px; box-shadow:0 10px 24px -16px rgba(58,42,34,.25);}
+  .panel h2{font-family:'Fraunces',serif; font-weight:500; font-size:1.2rem; margin:0 0 10px;}
+  .panel p{font-size:.88rem; line-height:1.6; color:var(--text-soft); margin:0 0 10px;}
+
+  /* ---------- FIND SEAT ---------- */
+  .search-wrap{padding:16px 20px 4px; position:relative;}
+  .search-wrap input{
+    width:100%; padding:14px 16px; border-radius:14px; border:1px solid rgba(58,42,34,.15);
+    font-family:'Outfit'; font-size:.95rem; background:var(--paper);
+  }
+  .search-wrap input:focus{outline:2px solid var(--coral); outline-offset:1px;}
+  .suggestions{
+    position:absolute; left:20px; right:20px; top:64px; background:var(--paper); border-radius:14px;
+    box-shadow:var(--shadow); z-index:10; overflow:hidden; display:none;
+  }
+  .suggestions.show{display:block;}
+  .suggestions div{padding:12px 16px; font-size:.9rem; cursor:pointer; border-bottom:1px solid rgba(58,42,34,.06);}
+  .suggestions div:last-child{border-bottom:none;}
+  .suggestions div:hover{background:var(--ivory);}
+
+  .seat-card{
+    margin:20px 20px 0; padding:26px 22px; border-radius:20px; text-align:center;
+    background:linear-gradient(160deg,#F6DCC0 0%, #F0AF77 55%, #E8734A 100%); color:#fff;
+    box-shadow:var(--shadow); display:none;
+  }
+  .seat-card.show{display:block; animation:fadeIn .4s ease;}
+  .seat-card .greet{font-size:.85rem; opacity:.95;}
+  .seat-card .name{font-family:'Fraunces',serif; font-style:italic; font-size:1.5rem; margin:4px 0 14px;}
+  .seat-card .table-num{font-family:'Fraunces',serif; font-size:2.6rem; font-weight:600; line-height:1;}
+  .seat-card .tlabel{font-size:.7rem; letter-spacing:2px; text-transform:uppercase; opacity:.9;}
+  .seat-card .seat-line{margin-top:6px; font-size:.85rem;}
+  .seat-card .mates{margin-top:16px; text-align:left; background:rgba(255,255,255,.18); border-radius:12px; padding:12px 14px;}
+  .seat-card .mates b{display:block; font-size:.72rem; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; opacity:.9;}
+  .seat-card .mates div{font-size:.85rem; padding:2px 0;}
+  .seat-card .find-map-btn{
+    margin-top:16px; background:#fff; color:var(--sunset); border:none; padding:10px 22px; border-radius:24px;
+    font-weight:600; font-size:.82rem; cursor:pointer;
+  }
+  .no-result{margin:20px; padding:18px; text-align:center; background:var(--paper); border-radius:16px; color:var(--text-soft); font-size:.88rem; display:none;}
+  .no-result.show{display:block;}
+
+  /* ---------- MAP ---------- */
+  .map-wrap{margin:14px 20px; background:var(--paper); border-radius:18px; padding:14px; box-shadow:0 10px 24px -16px rgba(58,42,34,.25);}
+  .map-wrap svg{width:100%; height:auto; display:block;}
+  .table-dot{fill:#EADFC8; stroke:#C9A24B; stroke-width:1.5; transition:all .3s ease;}
+  .table-dot.active{fill:var(--coral); stroke:#fff; stroke-width:2.5;}
+  .table-num-txt{font-family:'Outfit'; font-size:9px; fill:var(--text); font-weight:600;}
+  .table-num-txt.active{fill:#fff;}
+  .pulse-ring{fill:none; stroke:var(--coral); stroke-width:2; opacity:0; }
+  .pulse-ring.animate{animation:pulseRing 1.8s ease-out infinite;}
+  @keyframes pulseRing{0%{opacity:.9; r:16;} 100%{opacity:0; r:32;}}
+
+  /* ---------- SAVEURS ---------- */
+  .food-cat{margin:0 20px 16px;}
+  .food-cat h3{font-family:'Fraunces',serif; font-weight:500; font-size:1rem; margin:0 0 10px; color:var(--green-deep);}
+  .food-item{
+    background:var(--paper); border-radius:14px; padding:13px 16px; margin-bottom:8px; font-size:.88rem;
+    box-shadow:0 6px 16px -12px rgba(58,42,34,.3); border-left:3px solid var(--gold);
+  }
+
+  /* ---------- GALLERY ---------- */
+  .gallery-form{margin:14px 20px; background:var(--paper); border-radius:16px; padding:16px; box-shadow:0 10px 24px -16px rgba(58,42,34,.25);}
+  .gallery-form input[type=text]{width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(58,42,34,.15); font-family:'Outfit'; margin-bottom:10px;}
+  .upload-btn{display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:12px; border-radius:12px; border:2px dashed var(--peach); background:#FFF7EE; color:var(--sunset); font-weight:600; font-size:.85rem; cursor:pointer;}
+  .stats-row{display:flex; gap:10px; margin:14px 20px;}
+  .stat-pill{flex:1; background:var(--paper); border-radius:14px; padding:12px; text-align:center; box-shadow:0 6px 16px -12px rgba(58,42,34,.3);}
+  .stat-pill .num{font-family:'Fraunces',serif; font-size:1.4rem; color:var(--coral); font-weight:600;}
+  .stat-pill .lbl{font-size:.65rem; letter-spacing:1px; text-transform:uppercase; color:var(--text-soft);}
+  .masonry{columns:2; column-gap:10px; padding:4px 20px 10px;}
+  .masonry img, .masonry .ph-slot{width:100%; border-radius:12px; margin-bottom:10px; display:block; break-inside:avoid; box-shadow:0 6px 16px -12px rgba(58,42,34,.3);}
+  .empty-state{margin:20px; padding:26px; text-align:center; background:var(--paper); border-radius:16px; color:var(--text-soft); font-size:.88rem;}
+  .lightbox{position:fixed; inset:0; background:rgba(20,14,10,.92); z-index:100; display:none; align-items:center; justify-content:center; padding:20px;}
+  .lightbox.show{display:flex;}
+  .lightbox img{max-width:100%; max-height:80vh; border-radius:8px;}
+  .lightbox .close{position:absolute; top:20px; right:24px; color:#fff; font-size:1.6rem; background:none; border:none; cursor:pointer;}
+
+  /* ---------- ALBUM ---------- */
+  .tabs{display:flex; gap:8px; padding:14px 20px 4px; overflow-x:auto;}
+  .tab{flex:none; padding:9px 16px; border-radius:20px; background:var(--paper); font-size:.8rem; font-weight:500; color:var(--text-soft); cursor:pointer; border:1px solid rgba(58,42,34,.08);}
+  .tab.active{background:var(--coral); color:#fff; border-color:var(--coral);}
+  .ph-slot{aspect-ratio:3/4; background:linear-gradient(135deg,#EAC0BC,#F0AF77); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.3rem;}
+
+  /* ---------- GIFTS ---------- */
+  .gift-icon{font-size:2.2rem; text-align:center; display:block; margin-bottom:12px;}
+
+  /* ---------- GUESTBOOK ---------- */
+  .gb-form{margin:14px 20px; background:var(--paper); border-radius:16px; padding:16px; box-shadow:0 10px 24px -16px rgba(58,42,34,.25);}
+  .gb-form input, .gb-form textarea{width:100%; padding:11px 13px; border-radius:10px; border:1px solid rgba(58,42,34,.15); font-family:'Outfit'; margin-bottom:10px; font-size:.9rem;}
+  .gb-form textarea{min-height:80px; resize:vertical;}
+  .send-btn{width:100%; padding:12px; border-radius:12px; background:var(--coral); color:#fff; border:none; font-weight:600; cursor:pointer;}
+  .gb-message{margin:0 20px 12px; background:var(--paper); border-radius:14px; padding:14px 16px; box-shadow:0 6px 16px -12px rgba(58,42,34,.3);}
+  .gb-message .who{font-family:'Fraunces',serif; font-weight:500; font-size:.9rem; color:var(--coral);}
+  .gb-message .msg{font-size:.85rem; margin-top:4px; line-height:1.5;}
+  .gb-pending-tag{font-size:.65rem; letter-spacing:1px; text-transform:uppercase; color:var(--gold); margin-top:6px; display:block;}
+
+  /* ---------- ADMIN ---------- */
+  .admin-row{display:flex; justify-content:space-between; align-items:center; background:var(--paper); border-radius:12px; padding:12px 14px; margin:0 20px 10px; box-shadow:0 6px 16px -12px rgba(58,42,34,.3);}
+  .admin-row button{border:none; padding:7px 14px; border-radius:16px; font-size:.75rem; font-weight:600; cursor:pointer;}
+  .btn-approve{background:var(--green-leaf); color:#fff;}
+  .btn-delete{background:#C85C4A; color:#fff;}
+  .lock-form{margin:40px 20px; text-align:center;}
+  .lock-form input{padding:12px; border-radius:10px; border:1px solid rgba(58,42,34,.2); text-align:center; letter-spacing:3px; width:160px;}
+
+  /* ---------- BOTTOM NAV ---------- */
+  #bottomnav{
+    position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:460px;
+    background:rgba(255,252,247,.94); backdrop-filter:blur(10px); border-top:1px solid rgba(58,42,34,.08);
+    display:flex; justify-content:space-around; padding:10px 6px calc(10px + env(safe-area-inset-bottom)); z-index:50;
+  }
+  .nav-btn{background:none; border:none; display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--text-soft); font-size:.62rem; cursor:pointer; flex:1;}
+  .nav-btn .ic{font-size:1.15rem;}
+  .nav-btn.active{color:var(--coral);}
+
+  ::-webkit-scrollbar{display:none;}
+</style>
+</head>
+<body>
+
+<div id="shell">
+
+  <!-- SPLASH -->
+  <div id="splash">
+    <svg viewBox="0 0 220 200">
+      <circle class="sun" cx="110" cy="90" r="34" fill="#F6C177"/>
+      <path d="M0 150 Q55 110 110 150 T220 150 V200 H0 Z" fill="#33463A"/>
+      <path d="M40 150 C30 120 45 95 60 100 C55 115 55 135 40 150 Z" fill="#2E4436"/>
+      <path d="M170 150 C182 118 165 92 150 98 C158 114 160 136 170 150 Z" fill="#2E4436"/>
+    </svg>
+    <h1 class="display">Yoane &amp; Marie-Aude</h1>
+    <p>08 août 2026 · Menara Garden</p>
+  </div>
+
+  <!-- ===================== HOME ===================== -->
+  <div class="screen active" id="screen-home">
+    <div id="home-hero">
+      <div class="sun-glow"></div>
+      <svg class="fronds" viewBox="0 0 460 90" preserveAspectRatio="none">
+        <path d="M0 90 C40 40 90 70 130 40 C170 15 210 55 240 30 C280 5 320 45 360 25 C400 10 430 40 460 20 V90 Z" fill="#233A2C" opacity="0.9"/>
+      </svg>
+      <div class="eyebrow">Mariage traditionnel</div>
+      <div class="couple-names">Yoane &amp; Marie-Aude</div>
+      <div class="couple-meta">📅 Samedi 08 août 2026 &nbsp;·&nbsp; 📍 Menara Garden, Yopougon<br><b>Thème — Tropical Sunset</b></div>
+      <div class="photo-strip">
+        <div class="ph">Photo 1</div><div class="ph">Photo 2</div><div class="ph">Photo 3</div>
+      </div>
+      <button class="enter-btn" onclick="scrollToNav()">Entrer dans notre univers</button>
+    </div>
+
+    <div class="verse-block">
+      <p>« Par-dessus tout, revêtez-vous de l'amour, qui est le lien de la perfection. »</p>
+      <span>Colossiens 3:14</span>
+    </div>
+
+    <div class="section-label" id="nav-anchor">Notre univers</div>
+    <div class="card-grid">
+      <div class="nav-card" onclick="showScreen('seat')"><span class="ic">🪑</span><span class="lbl">Trouver ma place</span><span class="sub">Table &amp; voisins</span></div>
+      <div class="nav-card" onclick="showScreen('menu')"><span class="ic">🍽️</span><span class="lbl">Découvrir les saveurs</span><span class="sub">Mets &amp; boissons</span></div>
+      <div class="nav-card" onclick="showScreen('gifts')"><span class="ic">🎁</span><span class="lbl">Informations cadeaux</span><span class="sub">Notre petit mot</span></div>
+      <div class="nav-card" onclick="showScreen('gallery')"><span class="ic">📸</span><span class="lbl">Partager mes photos</span><span class="sub">Galerie collaborative</span></div>
+      <div class="nav-card" onclick="showScreen('album')"><span class="ic">🖼️</span><span class="lbl">Album officiel</span><span class="sub">Photos du photographe</span></div>
+      <div class="nav-card" onclick="showScreen('guestbook')"><span class="ic">💌</span><span class="lbl">Livre d'or</span><span class="sub">Laissez un mot</span></div>
+    </div>
+    <div class="divider-scallop"></div>
+  </div>
+
+  <!-- ===================== FIND SEAT ===================== -->
+  <div class="screen" id="screen-seat">
+    <div class="topbar"><button class="back" onclick="showScreen('home')">←</button><span class="title">Trouver ma place</span></div>
+    <div class="search-wrap">
+      <input type="text" id="seat-input" placeholder="Votre prénom et nom..." autocomplete="off">
+      <div class="suggestions" id="seat-suggestions"></div>
+    </div>
+    <div id="sync-status" style="font-size:.7rem; color:var(--text-soft); text-align:center; margin:6px 20px 0;">🔄 Synchronisation avec Google Sheets...</div>
+    <div class="seat-card" id="seat-card"></div>
+    <div class="no-result" id="seat-noresult">Nous ne trouvons pas ce nom 🌿 Vérifiez l'orthographe ou contactez les mariés.</div>
+  </div>
+
+  <!-- ===================== MAP ===================== -->
+  <div class="screen" id="screen-map">
+    <div class="topbar"><button class="back" onclick="showScreen('seat')">←</button><span class="title">Plan du jardin</span></div>
+    <div class="map-wrap"><svg id="garden-svg" viewBox="0 0 400 320"></svg></div>
+    <p style="text-align:center; font-size:.78rem; color:var(--text-soft); margin-top:6px;">Votre table est mise en évidence en corail 🌇</p>
+  </div>
+
+  <!-- ===================== MENU ===================== -->
+  <div class="screen" id="screen-menu">
+    <div class="topbar"><button class="back" onclick="showScreen('home')">←</button><span class="title">🌸 Saveurs de la réception 🌸</span></div>
+    <div class="panel"><p>Nous avons imaginé une réception aux couleurs de nos traditions, avec une sélection de mets ivoiriens et de saveurs appréciées de tous.</p></div>
+    <div class="food-cat"><h3>🥗 Entrée</h3><div class="food-item">Salade composée fraîche</div></div>
+    <div class="food-cat">
+      <h3>🍽️ Plats traditionnels à découvrir</h3>
+      <div class="food-item">Tchep au poisson et au bœuf</div>
+      <div class="food-item">Placali accompagné de sauce kopè</div>
+      <div class="food-item">Foutou banane accompagné de sauce graine</div>
+      <div class="food-item">Kplé accompagné de foutou manioc</div>
+      <div class="food-item">Foutou igname accompagné de sauce gouagouassou</div>
+      <div class="food-item">Méchoui de mouton accompagné d'attiéké</div>
+      <div class="food-item">Poisson frit et poulet frit accompagnés d'alloco et de frites</div>
+      <div class="food-item">Igname bouillie accompagnée de sauce tomate</div>
+    </div>
+    <div class="food-cat"><h3>🍰 Douceur</h3><div class="food-item">Wedding cake</div></div>
+    <div class="food-cat"><h3>🥤 Boissons</h3><div class="food-item">Eau minérale · Jus naturels · Boissons gazeuses · Bandji</div></div>
+  </div>
+
+  <!-- ===================== GIFTS ===================== -->
+  <div class="screen" id="screen-gifts">
+    <div class="topbar"><button class="back" onclick="showScreen('home')">←</button><span class="title">Informations cadeaux</span></div>
+    <div class="panel">
+      <span class="gift-icon">🎁</span>
+      <p><b>Votre présence est le plus beau témoignage d'affection que nous puissions recevoir.</b></p>
+      <p>Pour celles et ceux qui souhaiteraient néanmoins nous offrir un présent, nous privilégions les cadeaux en espèces, afin de pouvoir les emporter plus facilement avec nous à notre retour à Dakar.</p>
+      <p>Un dispositif discret sera prévu lors de la réception.</p>
+      <p style="color:var(--coral); font-weight:600;">Merci du fond du cœur pour votre délicatesse.</p>
+    </div>
+  </div>
+
+  <!-- ===================== GALLERY ===================== -->
+  <div class="screen" id="screen-gallery">
+    <div class="topbar"><button class="back" onclick="showScreen('home')">←</button><span class="title">Partager mes photos</span></div>
+    <div class="gallery-form">
+      <input type="text" id="gallery-name" placeholder="Votre prénom (pour la légende)">
+      <label class="upload-btn">📷 Ajouter des photos
+        <input type="file" id="gallery-input" accept="image/*" multiple style="display:none">
+      </label>
+      <div id="upload-progress" style="font-size:.75rem; color:var(--text-soft); margin-top:8px;"></div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-pill"><div class="num" id="stat-photos">0</div><div class="lbl">Photos</div></div>
+      <div class="stat-pill"><div class="num" id="stat-people">0</div><div class="lbl">Participants</div></div>
+    </div>
+    <div class="masonry" id="gallery-grid"></div>
+    <div class="empty-state" id="gallery-empty">Soyez le premier à partager un souvenir de cette journée 🌇</div>
+  </div>
+  <div class="lightbox" id="lightbox"><button class="close" onclick="closeLightbox()">✕</button><img id="lightbox-img"></div>
+
+  <!-- ===================== ALBUM ===================== -->
+  <div class="screen" id="screen-album">
+    <div class="topbar"><button class="back" onclick="showScreen('home')">←</button><span class="title">Album officiel</span></div>
+    <div class="tabs" id="album-tabs"></div>
+    <div class="masonry" id="album-grid"></div>
+  </div>
+
+  <!-- ===================== GUESTBOOK ===================== -->
+  <div class="screen" id="screen-guestbook">
+    <div class="topbar"><button class="back" onclick="showScreen('home')">←</button><span class="title">Livre d'or</span></div>
+    <div class="gb-form">
+      <input type="text" id="gb-name" placeholder="Votre nom">
+      <textarea id="gb-message" placeholder="Laissez un mot doux aux mariés..."></textarea>
+      <button class="send-btn" onclick="submitGuestbook()">Envoyer mon message</button>
+    </div>
+    <div id="guestbook-list"></div>
+  </div>
+
+  <!-- ===================== ADMIN ===================== -->
+  <div class="screen" id="screen-admin">
+    <div class="topbar"><button class="back" onclick="showScreen('home')">←</button><span class="title">Espace administrateur</span></div>
+    <div id="admin-lock" class="lock-form">
+      <p style="font-size:.85rem; color:var(--text-soft); margin-bottom:12px;">Code d'accès administrateur (démo)</p>
+      <input type="password" id="admin-pass" placeholder="••••">
+      <br><button class="send-btn" style="width:160px; margin-top:12px;" onclick="checkAdmin()">Entrer</button>
+    </div>
+    <div id="admin-panel" style="display:none;">
+      <div class="section-label">Messages en attente de validation</div>
+      <div id="admin-pending"></div>
+      <div class="section-label">Photos partagées</div>
+      <div id="admin-photos" class="masonry" style="padding:0 20px;"></div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div id="bottomnav">
+    <button class="nav-btn active" data-nav="home" onclick="showScreen('home')"><span class="ic">🏡</span>Accueil</button>
+    <button class="nav-btn" data-nav="seat" onclick="showScreen('seat')"><span class="ic">🪑</span>Ma place</button>
+    <button class="nav-btn" data-nav="gallery" onclick="showScreen('gallery')"><span class="ic">📸</span>Galerie</button>
+    <button class="nav-btn" data-nav="guestbook" onclick="showScreen('guestbook')"><span class="ic">💌</span>Livre d'or</button>
+    <button class="nav-btn" data-nav="admin" onclick="showScreen('admin')"><span class="ic">🔐</span>Admin</button>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   DONNÉES INVITÉS — synchronisées depuis votre Google Sheets
+   (onglet "Réponses au formulaire" + onglet "Table des invités")
+   Tables nommées selon la palette Tropical Sunset : Coral, Blush, Amber,
+   Terracotta, Champagne, Gold. 4 invités n'ont pas encore de table
+   (Bosson Mickael, DJANE REINE, DIBO Andrea, Ivano Koumi) — dès que vous
+   les placez dans le sheet, redonnez-moi accès et je resynchronise.
+   ===================================================================== */
+const TABLE_INFO = {
+  1:{name:"Coral",     hex:"#E8734A"},
+  2:{name:"Blush",     hex:"#EAC0BC"},
+  3:{name:"Amber",     hex:"#E8A33D"},
+  4:{name:"Terracotta",hex:"#C1613C"},
+  5:{name:"Champagne", hex:"#E4CE9C"},
+  6:{name:"Gold",      hex:"#C9A24B"}
+};
+let GUESTS = [
+  // Table 1 — Coral
+  {fullName:"Assagou Josaphat Sosthene", companion:"Guéla Marie Désirée", table:1},
+  {fullName:"Koné Ismaël", companion:null, table:1},
+  {fullName:"Konan David", companion:null, table:1},
+  {fullName:"Cyrille Tresor Ntakpe", companion:null, table:1},
+  {fullName:"BAMBA MOUSSA", companion:null, table:1},
+  {fullName:"Coulibaly Mohamed Zanape", companion:null, table:1},
+  {fullName:"Boni Mahicha", companion:null, table:1},
+  {fullName:"SERI GNOLOU DAVID MARSHALL", companion:null, table:1},
+  // Table 2 — Blush
+  {fullName:"FOFANA Baba", companion:null, table:2},
+  {fullName:"DIBY Ulrich", companion:"DIGBA Marie-France", table:2},
+  {fullName:"KADJA blin Jean Lambert", companion:null, table:2},
+  {fullName:"N'GUESSAN INES", companion:null, table:2},
+  {fullName:"Marina Kakou", companion:null, table:2},
+  {fullName:"COULIBALY Amara Junior", companion:"Djoko Manuella", table:2},
+  // Table 3 — Amber
+  {fullName:"ZINSOU SEM EMMANUEL", companion:null, table:3},
+  {fullName:"Timy YAO", companion:null, table:3},
+  {fullName:"Diomande Tiémoko Cheick Oumar", companion:null, table:3},
+  {fullName:"MARKIN Amichia Akane Jean-Francis", companion:null, table:3},
+  {fullName:"Florence THIAM", companion:null, table:3},
+  {fullName:"Roméo Désiré Kouassi", companion:null, table:3},
+  {fullName:"Konan Michela", companion:null, table:3},
+  {fullName:"AHOURE Don Yves", companion:null, table:3},
+  // Table 4 — Terracotta
+  {fullName:"KOUTOUAN Erwan", companion:null, table:4},
+  {fullName:"AKA Roxane", companion:null, table:4},
+  {fullName:"N'GUESSAN Anne Lydie", companion:null, table:4},
+  {fullName:"GOHORE LOU JOSEE RIDÉLISA", companion:null, table:4},
+  {fullName:"TB", companion:null, table:4},
+  {fullName:"KEITA Aminata", companion:null, table:4},
+  {fullName:"Fréjus ATTEBI", companion:null, table:4},
+  // Table 5 — Champagne
+  {fullName:"Asman Steph Renaud", companion:null, table:5},
+  {fullName:"Melice Money", companion:null, table:5},
+  {fullName:"DJÈ KOUAKOU JEAN-EMMANUEL CHRISTIAN", companion:null, table:5},
+  {fullName:"Yann DIÉ", companion:"Békan Kouadio", table:5},
+  {fullName:"Coulibaly Kikoun Josué Gnelfang", companion:null, table:5},
+  {fullName:"KONAN RICHE MARSHALL", companion:null, table:5},
+  {fullName:"ADINGRA Kouaman Venance", companion:null, table:5},
+  // Table 6 — Gold
+  {fullName:"Boa Othniel", companion:"Boa Hermine", table:6},
+  {fullName:"Maman Pone", companion:"Mon fils Peniel Pone Bi", table:6},
+  {fullName:"Willy glahou", companion:"Tagro Reine", table:6},
+  {fullName:"Dybi wilfried", companion:"Glaou Carine", table:6},
+  // Pas encore de table attribuée
+  {fullName:"Bosson Mickael", companion:null, table:null},
+  {fullName:"DJANE REINE", companion:null, table:null},
+  {fullName:"DIBO Andrea", companion:null, table:null},
+  {fullName:"Ivano Koumi", companion:"Léandre Kouame", table:null}
+];
+function matesForGuest(g){
+  if(!g.table) return [];
+  return GUESTS.filter(o=>o.table===g.table && o!==g).map(o=> o.companion ? `${o.fullName} + ${o.companion}` : o.fullName);
+}
+
+/* =====================================================================
+   SYNCHRONISATION AUTOMATIQUE AVEC GOOGLE SHEETS
+   ---------------------------------------------------------------------
+   Principe : le navigateur de l'invité va lire directement votre Google
+   Sheets (en lecture seule, sans mot de passe) à chaque ouverture du site.
+   Toute modification faite dans le sheet est donc visible sur le site,
+   sans jamais toucher au code.
+
+   ⚠️ CONDITION UNIQUE : le sheet doit être partagé en
+      "Accès général → Tous les utilisateurs disposant du lien → Lecteur"
+      (Partager, en haut à droite du Google Sheets). Aucune connexion
+      Google n'est requise pour vos invités, juste un accès en lecture.
+
+   Si le sheet n'est pas encore public, ou en cas de coupure réseau, le
+   site retombe automatiquement sur le dernier instantané enregistré dans
+   GUESTS ci-dessus, donc rien n'est jamais cassé pour vos invités.
+   ===================================================================== */
+const SHEET_ID = "1oNFzsq3Wuqyej18k0K73bysJMaYZIoLrYYB1dcOACGU";
+const TAB_RSVP = "Réponses au formulaire 1";
+const TAB_TABLES = "Table des invités";
+
+function sheetCsvUrl(tabName){
+  return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}`;
+}
+
+// Petit parseur CSV tolérant aux guillemets et virgules dans les champs
+function parseCSV(text){
+  const rows = []; let row = []; let field = ''; let inQuotes = false;
+  for(let i=0;i<text.length;i++){
+    const c = text[i], next = text[i+1];
+    if(inQuotes){
+      if(c === '"' && next === '"'){ field+='"'; i++; }
+      else if(c === '"'){ inQuotes = false; }
+      else field += c;
+    } else {
+      if(c === '"') inQuotes = true;
+      else if(c === ','){ row.push(field); field=''; }
+      else if(c === '\n' || c === '\r'){
+        if(c === '\r' && next === '\n') i++;
+        row.push(field); field=''; rows.push(row); row=[];
+      } else field += c;
+    }
+  }
+  if(field.length || row.length){ row.push(field); rows.push(row); }
+  return rows.filter(r => r.some(c=>c && c.trim()!==''));
+}
+
+function isTableCell(c){ return /^table\s*\d+/i.test((c||'').trim()); }
+function tableNumFrom(c){ const m = (c||'').match(/\d+/); return m ? parseInt(m[0],10) : null; }
+
+function buildGuestsFromSheets(rsvpRows, tableRows){
+  // --- 1. Parse l'onglet Réponses (RSVP) ---
+  const rsvpList = rsvpRows.slice(1).map(cells=>{
+    const fullName = (cells[1]||'').trim();
+    const accompanied = (cells[2]||'').trim().toLowerCase().startsWith('oui');
+    const companion = accompanied ? ((cells[3]||'').trim() || null) : null;
+    return fullName ? {fullName, companion, norm: normalize(fullName)} : null;
+  }).filter(Boolean);
+  const rsvpByNorm = new Map(rsvpList.map(r=>[r.norm, r]));
+
+  // --- 2. Parse l'onglet Table des invités ---
+  const assigned = new Map(); // norm -> guest object
+  const extras = [];          // co-invités détectés à la même table (sans lien RSVP)
+
+  tableRows.forEach(cells=>{
+    cells = cells.map(c=>(c||'').trim());
+    const name = cells[0];
+    if(!name || isTableCell(name)) return; // ligne vide ou ligne "Table N" isolée
+    const tableIdx = cells.findIndex((c,i)=> i>0 && isTableCell(c));
+    if(tableIdx === -1) return; // pas d'info de table sur cette ligne (ex: en-tête)
+    const tableNum = tableNumFrom(cells[tableIdx]);
+    const extraName = cells.slice(1, tableIdx).find(c=>c) || null;
+
+    const rsvp = rsvpByNorm.get(normalize(name));
+    let companion = null;
+    if(rsvp && rsvp.companion){
+      companion = rsvp.companion; // la fiche RSVP fait foi pour l'accompagnant
+    } else if(extraName){
+      // pas d'accompagnant déclaré au RSVP mais un 2e nom sur la ligne :
+      // il s'agit d'un autre invité qui partage la même table
+      extras.push({fullName: extraName, companion:null, table: tableNum});
+    }
+    assigned.set(normalize(name), {fullName: name, companion, table: tableNum});
+  });
+
+  // --- 3. Invités du RSVP non (encore) placés ---
+  rsvpList.forEach(r=>{
+    if(!assigned.has(r.norm)){
+      assigned.set(r.norm, {fullName: r.fullName, companion: r.companion, table: null});
+    }
+  });
+
+  // --- 4. Co-invités détectés uniquement dans l'onglet Table ---
+  extras.forEach(e=>{
+    const key = normalize(e.fullName);
+    if(!assigned.has(key)) assigned.set(key, e);
+  });
+
+  const result = Array.from(assigned.values());
+  return result.length ? result : null;
+}
+
+async function syncFromGoogleSheets(){
+  setSyncStatus('syncing');
+  try{
+    const [rsvpText, tableText] = await Promise.all([
+      fetch(sheetCsvUrl(TAB_RSVP)).then(r=>{ if(!r.ok) throw new Error('rsvp'); return r.text(); }),
+      fetch(sheetCsvUrl(TAB_TABLES)).then(r=>{ if(!r.ok) throw new Error('tables'); return r.text(); })
+    ]);
+    const rsvpRows = parseCSV(rsvpText);
+    const tableRows = parseCSV(tableText);
+    const fresh = buildGuestsFromSheets(rsvpRows, tableRows);
+    if(fresh && fresh.length){
+      GUESTS = fresh;
+      setSyncStatus('live');
+    } else {
+      setSyncStatus('offline');
+    }
+  } catch(e){
+    setSyncStatus('offline');
+  }
+}
+function setSyncStatus(state){
+  const el = document.getElementById('sync-status');
+  if(!el) return;
+  const now = new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  if(state==='syncing') el.innerHTML = '🔄 Synchronisation avec Google Sheets...';
+  if(state==='live') el.innerHTML = `✅ Synchronisé avec Google Sheets · ${now} <span onclick="syncFromGoogleSheets()" style="text-decoration:underline; cursor:pointer;">actualiser</span>`;
+  if(state==='offline') el.innerHTML = `⚠️ Hors-ligne — dernières données locales <span onclick="syncFromGoogleSheets()" style="text-decoration:underline; cursor:pointer;">réessayer</span>`;
+}
+syncFromGoogleSheets();
+
+/* =====================================================================
+   NAVIGATION
+   ===================================================================== */
+function showScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active', b.dataset.nav===name));
+  window.scrollTo({top:0, behavior:'instant'});
+  if(name==='map') drawGardenMap(window.__selectedGuest);
+  if(name==='album') initAlbum();
+  if(name==='admin') refreshAdmin();
+}
+function scrollToNav(){ document.getElementById('nav-anchor').scrollIntoView({behavior:'smooth', block:'start'}); }
+
+window.addEventListener('load', ()=>{
+  setTimeout(()=>{ document.getElementById('splash').classList.add('hidden'); }, 1900);
+});
+
+/* =====================================================================
+   RECHERCHE INTELLIGENTE — normalisation accents/tirets/casse + tolérance fautes
+   ===================================================================== */
+function normalize(str){
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .toLowerCase().replace(/[-']/g,' ').replace(/\s+/g,' ').trim();
+}
+function levenshtein(a,b){
+  const m=a.length, n=b.length;
+  const d=Array.from({length:m+1},(_,i)=>[i,...Array(n).fill(0)]);
+  for(let j=0;j<=n;j++) d[0][j]=j;
+  for(let i=1;i<=m;i++) for(let j=1;j<=n;j++){
+    d[i][j]=Math.min(d[i-1][j]+1, d[i][j-1]+1, d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));
+  }
+  return d[m][n];
+}
+function matchGuest(query){
+  const q = normalize(query);
+  if(!q) return [];
+  const scored = GUESTS.map(g=>{
+    const words = normalize(g.fullName).split(' ');
+    const full1 = normalize(g.fullName);
+    const full2 = words.slice().reverse().join(' ');
+    let score = 999;
+    [full1, full2].forEach(f=>{
+      if(f===q) score = Math.min(score, 0);
+      else if(f.includes(q) || q.includes(f)) score = Math.min(score, 1);
+      else score = Math.min(score, levenshtein(f, q));
+    });
+    return {g, score};
+  });
+  return scored.filter(s=>s.score<=3).sort((a,b)=>a.score-b.score).map(s=>s.g);
+}
+
+const seatInput = document.getElementById('seat-input');
+const suggestBox = document.getElementById('seat-suggestions');
+seatInput.addEventListener('input', ()=>{
+  const matches = matchGuest(seatInput.value).slice(0,5);
+  document.getElementById('seat-card').classList.remove('show');
+  document.getElementById('seat-noresult').classList.remove('show');
+  if(seatInput.value.trim().length<2 || matches.length===0){ suggestBox.classList.remove('show'); return; }
+  suggestBox.innerHTML = matches.map((g,i)=>`<div onclick="selectGuestByIndex(${GUESTS.indexOf(g)})">${g.fullName}${g.companion? ' <span style=\"color:var(--text-soft);font-size:.78rem;\">+ '+g.companion+'</span>':''}</div>`).join('');
+  suggestBox.classList.add('show');
+});
+seatInput.addEventListener('keydown', e=>{ if(e.key==='Enter') doSearch(); });
+function doSearch(){
+  suggestBox.classList.remove('show');
+  const matches = matchGuest(seatInput.value);
+  if(matches.length>0) renderSeat(matches[0]);
+  else { document.getElementById('seat-card').classList.remove('show'); document.getElementById('seat-noresult').classList.add('show'); }
+}
+function selectGuestByIndex(i){
+  const g = GUESTS[i];
+  seatInput.value = g.fullName;
+  suggestBox.classList.remove('show');
+  renderSeat(g);
+}
+function renderSeat(g){
+  window.__selectedGuest = g;
+  document.getElementById('seat-noresult').classList.remove('show');
+  const card = document.getElementById('seat-card');
+  const firstName = g.fullName.split(' ')[0];
+
+  if(g.table){
+    const info = TABLE_INFO[g.table];
+    const mates = matesForGuest(g);
+    card.innerHTML = `
+      <div class="greet">Bonjour ${firstName},</div>
+      <div class="name">Nous sommes heureux de vous accueillir</div>
+      <div class="tlabel">🌿 Votre table</div>
+      <div class="table-num">${info.name}</div>
+      <div class="seat-line">Table ${g.table}${g.companion ? ' · avec '+g.companion : ''}</div>
+      ${mates.length ? `<div class="mates"><b>Vous serez installé(e) aux côtés de</b>${mates.map(m=>`<div>• ${m}</div>`).join('')}</div>` : ''}
+      <button class="find-map-btn" onclick="showScreen('map')">Voir le plan du jardin →</button>
+    `;
+  } else {
+    card.innerHTML = `
+      <div class="greet">Bonjour ${firstName},</div>
+      <div class="name">Merci pour votre confirmation 🌿</div>
+      ${g.companion ? `<div class="mates" style="margin-top:4px;"><b>Vous serez accompagné(e) de</b><div>• ${g.companion}</div></div>` : ''}
+      <div class="seat-line" style="margin-top:16px; opacity:.95;">Le plan de table est en cours de préparation.<br>Revenez ici quelques jours avant le mariage pour découvrir votre table 🌇</div>
+    `;
+  }
+  card.classList.add('show');
+}
+
+/* =====================================================================
+   PLAN DU JARDIN
+   ===================================================================== */
+function drawGardenMap(selected){
+  const svg = document.getElementById('garden-svg');
+  const positions = [
+    {n:1,x:80,y:70},{n:2,x:260,y:60},{n:3,x:340,y:160},
+    {n:4,x:220,y:230},{n:5,x:80,y:220},{n:6,x:170,y:130}
+  ];
+  const selTable = selected ? selected.table : null;
+  let s = `<rect x="0" y="0" width="400" height="320" rx="16" fill="#F3E9D6"/>
+    <path d="M0 30 Q200 -10 400 30" stroke="#C9A24B" stroke-width="1" fill="none" opacity=".4"/>
+    <text x="200" y="20" text-anchor="middle" font-size="10" fill="#8A7666" font-family="Outfit">🌿 Allée du jardin — cérémonie</text>`;
+  positions.forEach(p=>{
+    const info = TABLE_INFO[p.n];
+    const active = p.n===selTable;
+    if(active) s += `<circle class="pulse-ring animate" cx="${p.x}" cy="${p.y}" r="20"/>`;
+    s += `<circle cx="${p.x}" cy="${p.y}" r="20" fill="${info.hex}" stroke="${active?'#fff':'#3A2A22'}" stroke-width="${active?3:1}" opacity="${active?1:0.85}"/>
+      <text x="${p.x}" y="${p.y+3}" text-anchor="middle" font-size="9" font-weight="600" font-family="Outfit" fill="${active?'#fff':'#3A2A22'}">${p.n}</text>
+      <text x="${p.x}" y="${p.y+34}" text-anchor="middle" font-size="9" font-family="Outfit" fill="${active?'var(--coral)':'#8A7666'}" font-weight="${active?'700':'400'}">${info.name}</text>`;
+  });
+  svg.innerHTML = s;
+}
+drawGardenMap(null);
+
+/* =====================================================================
+   STOCKAGE — window.storage (persistant, partagé entre invités)
+   Remplacer à terme par Firebase pour la production (voir note finale)
+   ===================================================================== */
+async function safeGet(key){
+  try{ const r = await window.storage.get(key, true); return r ? JSON.parse(r.value) : []; }
+  catch(e){ return []; }
+}
+async function safeSet(key, val){
+  try{ await window.storage.set(key, JSON.stringify(val), true); }catch(e){ console.error(e); }
+}
+
+/* ---------- GALERIE ---------- */
+async function loadGallery(){
+  const photos = await safeGet('wedding-gallery');
+  const grid = document.getElementById('gallery-grid');
+  const empty = document.getElementById('gallery-empty');
+  document.getElementById('stat-photos').textContent = photos.length;
+  document.getElementById('stat-people').textContent = new Set(photos.map(p=>p.by)).size;
+  if(photos.length===0){ grid.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  grid.innerHTML = photos.slice().reverse().map(p=>`<img src="${p.src}" alt="Photo de ${p.by}" onclick="openLightbox('${p.src}')">`).join('');
+}
+function compressImage(file){
+  return new Promise((resolve,reject)=>{
+    const reader = new FileReader();
+    reader.onload = e=>{
+      const img = new Image();
+      img.onload = ()=>{
+        const maxW = 480;
+        const scale = Math.min(1, maxW/img.width);
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width*scale; canvas.height = img.height*scale;
+        canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+        resolve(canvas.toDataURL('image/jpeg', 0.55));
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+document.getElementById('gallery-input').addEventListener('change', async e=>{
+  const files = Array.from(e.target.files);
+  if(files.length===0) return;
+  const by = document.getElementById('gallery-name').value.trim() || 'Un invité';
+  const progress = document.getElementById('upload-progress');
+  const photos = await safeGet('wedding-gallery');
+  for(let i=0;i<files.length;i++){
+    progress.textContent = `Envoi ${i+1}/${files.length}...`;
+    try{
+      const src = await compressImage(files[i]);
+      photos.push({src, by, ts:Date.now()});
+    }catch(err){}
+  }
+  await safeSet('wedding-gallery', photos);
+  progress.textContent = 'Merci pour votre partage 🌸';
+  setTimeout(()=>progress.textContent='', 2000);
+  e.target.value='';
+  loadGallery();
+});
+function openLightbox(src){ document.getElementById('lightbox-img').src = src; document.getElementById('lightbox').classList.add('show'); }
+function closeLightbox(){ document.getElementById('lightbox').classList.remove('show'); }
+loadGallery();
+
+/* ---------- ALBUM OFFICIEL (démo — remplacer par vraies photos du photographe) ---------- */
+const ALBUM_CATS = ['Mariage traditionnel','Famille','Amis','Réception'];
+function initAlbum(){
+  const tabs = document.getElementById('album-tabs');
+  tabs.innerHTML = ALBUM_CATS.map((c,i)=>`<div class="tab ${i===0?'active':''}" onclick="selectAlbumTab(this,'${c}')">${c}</div>`).join('');
+  renderAlbum(ALBUM_CATS[0]);
+}
+function selectAlbumTab(el, cat){
+  document.querySelectorAll('#album-tabs .tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderAlbum(cat);
+}
+function renderAlbum(cat){
+  const grid = document.getElementById('album-grid');
+  grid.innerHTML = Array.from({length:6}).map((_,i)=>`<div class="ph-slot" style="aspect-ratio:${(i%3===0)?'3/4':'4/5'}">🌇</div>`).join('');
+}
+
+/* ---------- LIVRE D'OR ---------- */
+async function loadGuestbook(){
+  const messages = await safeGet('wedding-guestbook');
+  const list = document.getElementById('guestbook-list');
+  const approved = messages.filter(m=>m.approved);
+  if(approved.length===0){ list.innerHTML = `<div class="empty-state" style="margin:14px 20px;">Soyez le premier à laisser un mot 💌</div>`; return; }
+  list.innerHTML = approved.slice().reverse().map(m=>`
+    <div class="gb-message"><div class="who">${m.name}</div><div class="msg">${m.message}</div></div>
+  `).join('');
+}
+async function submitGuestbook(){
+  const name = document.getElementById('gb-name').value.trim();
+  const message = document.getElementById('gb-message').value.trim();
+  if(!name || !message) return;
+  const messages = await safeGet('wedding-guestbook');
+  messages.push({name, message, approved:false, ts:Date.now()});
+  await safeSet('wedding-guestbook', messages);
+  document.getElementById('gb-name').value=''; document.getElementById('gb-message').value='';
+  alert('Merci ! Votre message sera visible après validation. 🌿');
+}
+loadGuestbook();
+
+/* ---------- ADMIN (démo — code en clair côté client, à sécuriser en production) ---------- */
+function checkAdmin(){
+  const pass = document.getElementById('admin-pass').value;
+  if(pass === 'sunset2026'){
+    document.getElementById('admin-lock').style.display='none';
+    document.getElementById('admin-panel').style.display='block';
+    refreshAdmin();
+  } else { alert('Code incorrect (indice démo : sunset2026)'); }
+}
+async function refreshAdmin(){
+  if(document.getElementById('admin-panel').style.display==='none') return;
+  const messages = await safeGet('wedding-guestbook');
+  const pendingBox = document.getElementById('admin-pending');
+  const pending = messages.filter(m=>!m.approved);
+  pendingBox.innerHTML = pending.length===0 ? `<div class="empty-state" style="margin:0 20px 14px;">Aucun message en attente</div>` :
+    pending.map((m,idx)=>`<div class="admin-row"><div><b>${m.name}</b><br><span style="font-size:.78rem;color:var(--text-soft)">${m.message.slice(0,40)}${m.message.length>40?'…':''}</span></div>
+      <div><button class="btn-approve" onclick="approveMsg(${messages.indexOf(m)})">Valider</button> <button class="btn-delete" onclick="deleteMsg(${messages.indexOf(m)})">✕</button></div></div>`).join('');
+  const photos = await safeGet('wedding-gallery');
+  const photoBox = document.getElementById('admin-photos');
+  photoBox.innerHTML = photos.slice().reverse().map(p=>`<img src="${p.src}" onclick="deletePhoto('${p.ts}')" title="Cliquer pour supprimer">`).join('') || `<div class="empty-state">Aucune photo</div>`;
+}
+async function approveMsg(i){
+  const messages = await safeGet('wedding-guestbook');
+  messages[i].approved = true;
+  await safeSet('wedding-guestbook', messages);
+  refreshAdmin(); loadGuestbook();
+}
+async function deleteMsg(i){
+  const messages = await safeGet('wedding-guestbook');
+  messages.splice(i,1);
+  await safeSet('wedding-guestbook', messages);
+  refreshAdmin(); loadGuestbook();
+}
+async function deletePhoto(ts){
+  let photos = await safeGet('wedding-gallery');
+  photos = photos.filter(p=>String(p.ts)!==String(ts));
+  await safeSet('wedding-gallery', photos);
+  refreshAdmin(); loadGallery();
+}
+</script>
+</body>
+</html>
