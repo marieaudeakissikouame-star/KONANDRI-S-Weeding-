@@ -1,6 +1,7 @@
 // ====================================
 // APPLICATION - SITE COMPAGNON MARIAGE
 // Yoane & Marie-Aude - Tropical Sunset
+// Google Drive intégré pour galerie
 // ====================================
 
 // === DONNÉES ===
@@ -9,8 +10,11 @@ const SHEET_ID = '1oNFzsq3Wuqyej18k0K73bysJMaYZIoLrYYB1dcOACGU';
 const TAB_RSVP = 'Réponses au formulaire 1';
 const TAB_TABLES = 'Table des invités';
 
+// Google Drive - Dossier partagé pour galerie
+const GOOGLE_DRIVE_FOLDER_ID = 'YOUR_DRIVE_FOLDER_ID_HERE';
+const GOOGLE_DRIVE_API_KEY = 'YOUR_API_KEY_HERE';
+
 let GUESTS = [];
-let firebaseAvailable = false;
 
 const PHOTOS_OFFICIEL = [
   '49e207ec-66f1-4088-a475-57c1adf96f73.jpeg',
@@ -140,6 +144,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Sync Google Sheets
   syncFromGoogleSheets();
+
+  // Load Google Drive photos
+  loadGoogleDrivePhotos();
 });
 
 // === SEAT SEARCH ===
@@ -290,7 +297,7 @@ async function syncFromGoogleSheets() {
   }
 }
 
-// === PHOTOS ===
+// === PHOTOS OFFICIELLES ===
 
 function renderPhotosOfficial() {
   const hero = document.getElementById('hero-gallery');
@@ -318,6 +325,42 @@ function renderPhotosOfficial() {
     });
   }
 }
+
+// === GOOGLE DRIVE PHOTOS ===
+
+async function loadGoogleDrivePhotos() {
+  if (!GOOGLE_DRIVE_API_KEY || GOOGLE_DRIVE_API_KEY === 'YOUR_API_KEY_HERE') {
+    console.log('Google Drive API not configured - using localStorage only');
+    return;
+  }
+
+  try {
+    const url = `https://www.googleapis.com/drive/v3/files?q=trashed=false and '${GOOGLE_DRIVE_FOLDER_ID}' in parents&key=${GOOGLE_DRIVE_API_KEY}&pageSize=50`;
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.files && data.files.length > 0) {
+      const drivePhotos = data.files
+        .filter(f => f.mimeType.startsWith('image/'))
+        .map(f => ({
+          src: `https://drive.google.com/thumbnail?id=${f.id}&sz=w600`,
+          by: 'Galerie partagée',
+          ts: new Date(f.createdTime).getTime(),
+          driveId: f.id
+        }));
+
+      // Fusionner avec photos locales
+      const local = await safeGetLocal('wedding-shared');
+      const combined = [...drivePhotos, ...local];
+      await safeSetLocal('wedding-shared', combined);
+      await renderSharedPhotos();
+    }
+  } catch (err) {
+    console.error('Google Drive load error:', err);
+  }
+}
+
+// === PHOTOS PARTAGÉES (Local + Drive) ===
 
 async function handleUpload(e) {
   const files = Array.from(e.target.files);
@@ -389,8 +432,32 @@ async function renderSharedPhotos() {
     img.src = p.src;
     img.alt = `Photo partagée par ${p.by}`;
     img.loading = 'lazy';
+    img.addEventListener('click', () => viewPhotoFullscreen(p.src));
     grid.appendChild(img);
   });
+}
+
+function viewPhotoFullscreen(src) {
+  const modal = document.createElement('div');
+  modal.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    cursor: pointer;
+  `;
+  const img = document.createElement('img');
+  img.src = src;
+  img.style.cssText = 'max-width: 90%; max-height: 90%; border-radius: 8px;';
+  modal.appendChild(img);
+  modal.addEventListener('click', () => modal.remove());
+  document.body.appendChild(modal);
 }
 
 // === GUESTBOOK ===
