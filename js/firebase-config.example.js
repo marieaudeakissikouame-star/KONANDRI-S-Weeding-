@@ -1,12 +1,14 @@
-// Copy this file to js/firebase-config.js and paste your Firebase web app config.
-// You can find it in Firebase Console -> Project settings -> Your apps -> Config
+// Firebase Configuration Example
+// Copie ce fichier en 'firebase-config.js' et remplis avec tes données
+// NE PARTAGE PAS ton firebase-config.js en public !
 
-// Example (replace values with your project's values):
-export default {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "SENDER_ID",
-  appId: "APP_ID"
+const firebaseConfig = {
+  apiKey: 'YOUR_API_KEY_HERE',
+  authDomain: 'your-project.firebaseapp.com',
+  projectId: 'your-project-id',
+  storageBucket: 'your-project.appspot.com',
+  messagingSenderId: 'YOUR_SENDER_ID',
+  appId: 'YOUR_APP_ID'
 };
+
+export { firebaseConfig };

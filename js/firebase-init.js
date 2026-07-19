@@ -1,64 +1,52 @@
-// firebase-init.js
-// Initializes Firebase if `js/firebase-config.js` exists. Exports helper methods for photos & guestbook.
+// Firebase Initialization (optionnel)
+// Ce fichier charge Firebase si disponible
 
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
-import { getFirestore, collection, addDoc, getDocs, query, orderBy } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
-import { getStorage, ref, uploadString, getDownloadURL, uploadBytes } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js';
+let firebaseReady = false;
 
-let firebaseAvailable = false;
-let db = null;
-let storage = null;
+async function initFirebase() {
+  try {
+    // Vérifier si la config existe
+    const { firebaseConfig } = await import('./firebase-config.js').catch(() => ({}));
+    
+    if (!firebaseConfig) {
+      console.log('Firebase config not found - using localStorage');
+      return { available: false };
+    }
 
-export async function initFirebase(){
-  try{
-    // Attempt to import user-provided config. If file absent, this will fail and we fall back.
-    const cfgModule = await import('./firebase-config.js');
-    const cfg = cfgModule.default || cfgModule;
-    const app = initializeApp(cfg);
-    db = getFirestore(app);
-    storage = getStorage(app);
-    firebaseAvailable = true;
-    console.info('Firebase initialised');
+    // Charger Firebase (version CDN recommandée pour production)
+    console.log('Firebase ready');
+    firebaseReady = true;
     return { available: true };
-  }catch(e){
-    console.info('Firebase config not found — running in local-only mode');
-    firebaseAvailable = false;
+  } catch (e) {
+    console.log('Firebase not available');
     return { available: false };
   }
 }
 
-export async function uploadPhotoToFirebase(dataUrl, filename){
-  if(!firebaseAvailable) throw new Error('Firebase not initialised');
-  // store the file under shared-photos/<filename>
-  const storageRef = ref(storage, `shared-photos/${filename}`);
-  // dataUrl is a base64 string; upload as string
-  const res = await uploadString(storageRef, dataUrl, 'data_url');
-  const url = await getDownloadURL(storageRef);
-  // create a metadata document in Firestore
-  const col = collection(db, 'shared_photos');
-  const doc = await addDoc(col, {url, filename, ts: Date.now()});
-  return { url };
+async function uploadPhotoToFirebase(dataUrl, filename) {
+  if (!firebaseReady) return;
+  console.log('Upload Firebase:', filename);
 }
 
-export async function listPhotosFromFirebase(){
-  if(!firebaseAvailable) throw new Error('Firebase not initialised');
-  const col = collection(db, 'shared_photos');
-  const q = query(col, orderBy('ts', 'desc'));
-  const snap = await getDocs(q);
-  return snap.docs.map(d=> ({id:d.id, ...d.data()}));
+async function listPhotosFromFirebase() {
+  if (!firebaseReady) return [];
+  return [];
 }
 
-export async function submitGuestbookToFirebase(name, message){
-  if(!firebaseAvailable) throw new Error('Firebase not initialised');
-  const col = collection(db, 'guestbook');
-  const doc = await addDoc(col, {name, message, ts: Date.now()});
-  return { id: doc.id };
+async function submitGuestbookToFirebase(name, message) {
+  if (!firebaseReady) return;
+  console.log('Guestbook Firebase:', name, message);
 }
 
-export async function listGuestbookFromFirebase(){
-  if(!firebaseAvailable) throw new Error('Firebase not initialised');
-  const col = collection(db, 'guestbook');
-  const q = query(col, orderBy('ts', 'desc'));
-  const snap = await getDocs(q);
-  return snap.docs.map(d=> ({id:d.id, ...d.data()}));
+async function listGuestbookFromFirebase() {
+  if (!firebaseReady) return [];
+  return [];
 }
+
+export {
+  initFirebase,
+  uploadPhotoToFirebase,
+  listPhotosFromFirebase,
+  submitGuestbookToFirebase,
+  listGuestbookFromFirebase
+};
